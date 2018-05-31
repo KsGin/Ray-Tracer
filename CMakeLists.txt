@@ -3,4 +3,9 @@ project(Ray_Tracer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Ray_Tracer main.cpp)
+add_executable(Ray_Tracer
+        main.cpp
+        include/math/matrix.hpp
+        include/math/vector.hpp)
+
+target_link_libraries(Ray_Tracer /usr/local/Cellar/sdl2/2.0.8/lib/libSDL2.dylib)
