@@ -19,7 +19,7 @@ IntersectResult::IntersectResult(const IntersectResult &result) {
     this->isHit = result.isHit;
     this->nromal = result.nromal;
     this->position = result.position;
-    this->geometry = this->geometry;
+    this->geometry = result.geometry;
 }
 
 IntersectResult &IntersectResult::operator=(const IntersectResult &result) {
