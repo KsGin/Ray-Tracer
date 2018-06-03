@@ -1,13 +1,23 @@
 /*
  * File   : device
- * Author : KsGin 
+ * Author : KsGin
  * Date   : 2018/6/1
  */
 
 #include "../headers/device.h"
 
 Device::Device() {
+    this->pixels = 0;
+    this->window = 0;
+    this->renderer = 0;
+    this->texture = 0;
+}
 
+Device::~Device() {
+    if (this->pixels) {
+        delete[] this->pixels;
+        this->pixels = 0;
+    }
 }
 
 bool Device::initialize(int width, int height, bool isScreenFull) {
@@ -40,12 +50,14 @@ bool Device::initialize(int width, int height, bool isScreenFull) {
         return false;
     }
 
-    this->surface = SDL_LoadBMP("../resources/surface.bmp");
-    if (!surface) {
-        return -1;
+    this->pixels = new Uint8[this->width * this->height * 4];
+    memset(this->pixels, 0, static_cast<size_t>(this->width * this->height * 4));
+    if (!this->pixels) {
+        return false;
     }
 
-    this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+    this->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, this->width,
+                                      this->height);
     if (!texture) {
         return -1;
     }
@@ -59,7 +71,6 @@ void Device::show() {
 }
 
 void Device::destory() {
-    SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -70,6 +81,7 @@ void Device::updateRender() {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) isQuit = true;
     }
+    updatePixelsColor();
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);
     SDL_RenderPresent(renderer);
@@ -78,5 +90,22 @@ void Device::updateRender() {
 bool Device::windowShouldClose() {
     return isQuit;
 }
+
+void Device::setPixelColor(const int x, const int y, const Color &color) {
+
+    int idx = (y * width + x) * 4;
+
+    this->pixels[idx - 1] = color.a;
+    this->pixels[idx - 2] = color.b;
+    this->pixels[idx - 3] = color.g;
+    this->pixels[idx - 4] = color.r;
+
+}
+
+void Device::updatePixelsColor() {
+    SDL_UpdateTexture(this->texture, nullptr, this->pixels, width * 4);
+}
+
+
 
 
