@@ -52,16 +52,6 @@ class Device {
      */
     SDL_Event event;
 
-    /*
-     * 修改像素颜色
-     */
-    void setPixelColor(const int x , const int y , const Color& color);
-
-    /*
-     * 更新像素数据
-     */
-    void updatePixelsColor();
-
 public:
 
     /*
@@ -98,6 +88,21 @@ public:
      * 是否退出
      */
     bool windowShouldClose();
+
+    /*
+     * 修改像素颜色
+     */
+    void setPixelColor(const int x , const int y , const Color& color);
+
+    /*
+     * 获得像素颜色
+     */
+    Color getPixelColor(const int x , const int y);
+
+    /*
+     * 更新像素数据
+     */
+    void updatePixelsColor();
 };
 
 

@@ -13,7 +13,7 @@ Color::Color() {
     this->w = 0;
 }
 
-Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+Color::Color(float r, float g, float b, float a) {
     this->x = r;
     this->y = g;
     this->z = b;
@@ -51,18 +51,18 @@ Color Color::operator/(const Color &color) {
     return Color(r / color.r, g / color.g, b / color.b, a / color.a);
 }
 
-Color Color::operator+(const Uint8 c) {
+Color Color::operator+(const float c) {
     return Color(r + c, g + c, b + c, a + c);
 }
 
-Color Color::operator-(const Uint8 c) {
+Color Color::operator-(const float c) {
     return Color(r - c, g - c, b - c, a - c);
 }
 
-Color Color::operator*(const Uint8 c) {
+Color Color::operator*(const float c) {
     return Color(r * c, g * c, b * c, a * c);
 }
 
-Color Color::operator/(const Uint8 c) {
+Color Color::operator/(const float c) {
     return Color(r / c, g / c, b / c, a / c);
 }

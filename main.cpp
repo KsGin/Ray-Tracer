@@ -15,6 +15,11 @@ int main() {
     device->show();
 
     while (!device->windowShouldClose()) {
+
+        for (int i = 100; i < width - 100; ++i) {
+            device->setPixelColor(i, 200, Color(1.0, 0.0, 0.0, 1.0));
+        }
+
         device->updateRender();
     }
 

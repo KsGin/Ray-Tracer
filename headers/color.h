@@ -20,10 +20,10 @@ public:
      */
     union {
         struct {
-            Uint8 r, g, b, a;
+            float r, g, b, a;
         };
         struct {
-            Uint8 x, y, z, w;
+            float x, y, z, w;
         };
     };
 
@@ -35,7 +35,7 @@ public:
     /*
      * 值构造方法
      */
-    Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+    Color(float r, float g, float b, float a);
 
     /*
      * 引用拷贝
@@ -70,22 +70,22 @@ public:
     /*
      * 重载 +
      */
-    Color operator+(const Uint8 c);
+    Color operator+(const float c);
 
     /*
      * 重载 -
      */
-    Color operator-(const Uint8 c);
+    Color operator-(const float c);
 
     /*
      * 重载 *
      */
-    Color operator*(const Uint8 c);
+    Color operator*(const float c);
 
     /*
      * 重载 /
      */
-    Color operator/(const Uint8 c);
+    Color operator/(const float c);
 };
 
 

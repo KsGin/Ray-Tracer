@@ -4,6 +4,7 @@
  * Date   : 2018/6/1
  */
 
+#include <cmath>
 #include "../headers/device.h"
 
 Device::Device() {
@@ -95,15 +96,26 @@ void Device::setPixelColor(const int x, const int y, const Color &color) {
 
     int idx = (y * width + x) * 4;
 
-    this->pixels[idx - 1] = color.a;
-    this->pixels[idx - 2] = color.b;
-    this->pixels[idx - 3] = color.g;
-    this->pixels[idx - 4] = color.r;
+    this->pixels[idx - 1] = (Uint8) (std::fmaxf(std::fminf(color.a, 1.0), 0.0) * 255);
+    this->pixels[idx - 2] = (Uint8) (std::fmaxf(std::fminf(color.b, 1.0), 0.0) * 255);
+    this->pixels[idx - 3] = (Uint8) (std::fmaxf(std::fminf(color.g, 1.0), 0.0) * 255);
+    this->pixels[idx - 4] = (Uint8) (std::fmaxf(std::fminf(color.r, 1.0), 0.0) * 255);
 
 }
 
 void Device::updatePixelsColor() {
     SDL_UpdateTexture(this->texture, nullptr, this->pixels, width * 4);
+}
+
+Color Device::getPixelColor(const int x, const int y) {
+
+    int idx = (y * width + x) * 4;
+
+    float a = this->pixels[idx - 1] / 255;
+    float b = this->pixels[idx - 2] / 255;
+    float g = this->pixels[idx - 3] / 255;
+    float r = this->pixels[idx - 4] / 255;
+    return Color(r, g, b, a);
 }
 
 
