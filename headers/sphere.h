@@ -13,6 +13,7 @@
  * 球体类
  */
 class Sphere {
+public:
 
     /*
      * 球心坐标
