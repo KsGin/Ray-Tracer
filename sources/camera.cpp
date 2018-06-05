@@ -12,10 +12,10 @@ PerspectiveCamera::PerspectiveCamera() {
 
 }
 
-PerspectiveCamera::PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &front,
+PerspectiveCamera::PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &lookAt,
                                      const Math::Vector3 &up) {
     this->eye = eye;
-    this->front = front;
+    this->front = lookAt - this->eye;
     this->right = Vector3::cross(front, up);
     this->up = Vector3::cross(right, front);
     this->fovScale = static_cast<float>(tan(fov * 0.5 * M_PI / 180) * 2);

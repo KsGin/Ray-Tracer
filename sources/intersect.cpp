@@ -41,9 +41,10 @@ IntersectResult Intersect::intersect(const Ray &ray, const Sphere &sphere) {
     if (dotV <= 0) {
         float discr = dotV * dotV - d;
         if (discr >= 0) {
+            ret.isHit = true;
             ret.geometry = SPHERE;
             ret.distance = -dotV - sqrt(discr);
-            ret.position = ray.origin + ray.direction.scale(ret.distance, ret.distance, ret.distance);
+            ret.position = ray.origin + Vector3(ray.direction).scale(ret.distance, ret.distance, ret.distance);
             ret.nromal = (ret.position - sphere.center).normalize();
         }
     }
