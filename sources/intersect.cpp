@@ -4,7 +4,7 @@
  * Date   : 2018/6/1
  */
 
-#include "../headers/Intersect.h"
+#include "../headers/intersect.h"
 
 using namespace Math;
 
@@ -34,8 +34,9 @@ IntersectResult &IntersectResult::operator=(const IntersectResult &result) {
 IntersectResult Intersect::intersect(const Ray &ray, const Sphere &sphere) {
     IntersectResult ret;
 
-    Vector3 v = ray.origin - sphere.center;
-    float d = v.length() - sphere.radius;
+    Vector3 v = ray.origin - sphere.center;     // v = origin - center
+    float rayLength = v.length();
+    float d = rayLength * rayLength - sphere.radius * sphere.radius;       // d = v * v - radius * radius
     float dotV = Vector3::dot(ray.direction, v);
 
     if (dotV <= 0) {

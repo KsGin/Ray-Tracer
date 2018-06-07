@@ -66,6 +66,13 @@ namespace Math {
             return Vector2(_x - v2._x, _y - v2._y);
         }
 
+        /*
+         * 重载 *
+         */
+        Vector2 operator*(const float val) const {
+            return Vector2(_x * val , _y * val);
+        }
+
         /**
          * 判断相等
          */
@@ -163,6 +170,13 @@ namespace Math {
          */
         Vector3 operator-(const Vector3 &v3) const {
             return Vector3(_x - v3._x, _y - v3._y, _z - v3._z);
+        }
+
+        /*
+         * 重载 *
+         */
+        Vector3 operator*(const float val) const {
+            return Vector3(_x * val , _y * val , _z * val);
         }
 
         /**

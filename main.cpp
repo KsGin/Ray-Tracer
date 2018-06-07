@@ -22,17 +22,18 @@ int main() {
     while (!device->windowShouldClose()) {
 
         Sphere *sphere = new Sphere(Vector3(0, 0, 0), 1);
-        Camera *camera = new PerspectiveCamera(90, Vector3(0, 5, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
+        Camera *camera = new PerspectiveCamera(70, Vector3(3, 3, 3), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
-        for (int i = 0; i < height; ++i) {
-            float sy = 1 - i / (float)height;
-            for (int j = 0; j < width; ++j) {
-                float sx = j / (float)width;
-                Ray r = camera->generateRay(sx, sy);
-
-                IntersectResult ir = Intersect::intersect(r, *sphere);
-                if (ir.isHit) {
-                    device->setPixelColor(j , i, Color(0, 1, 1, 1));
+        for (int i = 0; i < width; ++i) {
+            float sx = i / (float) width;
+            for (int j = 0; j < height; ++j) {
+                float sy = j / (float) height;
+                Ray ray = camera->generateRay(sx, sy);
+//                std::cout << sx << " " << sy << std::endl;
+                IntersectResult intersectResult = Intersect::intersect(ray, *sphere);
+                if (intersectResult.isHit) {
+                    float depth = intersectResult.distance / 10;
+                    device->setPixelColor(i, j, Color(depth, depth, 0, 1));
                 }
             }
         }
