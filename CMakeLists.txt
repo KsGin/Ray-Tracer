@@ -12,6 +12,6 @@ add_executable(Ray_Tracer
         sources/sphere.cpp
         headers/sphere.h
         sources/intersect.cpp
-        headers/intersect.h sources/camera.cpp headers/camera.h sources/device.cpp headers/device.h sources/color.cpp headers/color.h)
+        headers/intersect.h sources/camera.cpp headers/camera.h sources/device.cpp headers/device.h sources/color.cpp headers/color.h sources/cube.cpp headers/cube.h sources/scene.cpp headers/scene.h)
 
 target_link_libraries(Ray_Tracer /usr/local/Cellar/sdl2/2.0.8/lib/libSDL2.dylib)

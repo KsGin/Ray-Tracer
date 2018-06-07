@@ -10,6 +10,7 @@
 #include "../include/math/vector.hpp"
 #include "ray.h"
 #include "sphere.h"
+#include "cube.h"
 
 /*
  * 集合类型
@@ -73,10 +74,17 @@ public:
  */
 class Intersect {
 public:
+
     /*
      * 球与光线相交
      */
     static IntersectResult intersect(const Ray &ray, const Sphere &sphere);
+
+
+    /*
+     * 立方体与光线相交
+     */
+    static IntersectResult intersect(const Ray &ray, const Cube &cube);
 };
 
 

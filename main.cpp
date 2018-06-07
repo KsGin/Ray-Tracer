@@ -4,8 +4,10 @@
 #include "headers/sphere.h"
 #include "headers/camera.h"
 #include "headers/intersect.h"
+#include "headers/scene.h"
 
 using namespace Math;
+using namespace std;
 
 const int width = 800;
 const int height = 600;
@@ -19,29 +21,27 @@ int main() {
 
     device->show();
 
+    Camera *camera = new PerspectiveCamera(90, Vector3(5, 5, 5), Vector3(0, 0, 0), Vector3(0, 1, 0));
+
+    vector<Sphere> models = vector<Sphere>(0);
+    models.push_back(Sphere(Vector3(0, 0, 0), 1));
+    models.push_back(Sphere(Vector3(0, 3, 0), 1));
+    models.push_back(Sphere(Vector3(0, -3, 0), 1));
+    models.push_back(Sphere(Vector3(-3, 0, 0), 1));
+    models.push_back(Sphere(Vector3(3, 0, 0), 1));
+
+    Scene *scene = new Scene(models, camera, width, height);
+
     while (!device->windowShouldClose()) {
 
-        Sphere *sphere = new Sphere(Vector3(0, 0, 0), 1);
-        Camera *camera = new PerspectiveCamera(70, Vector3(3, 3, 3), Vector3(0, 0, 0), Vector3(0, 1, 0));
-
-        for (int i = 0; i < width; ++i) {
-            float sx = i / (float) width;
-            for (int j = 0; j < height; ++j) {
-                float sy = j / (float) height;
-                Ray ray = camera->generateRay(sx, sy);
-//                std::cout << sx << " " << sy << std::endl;
-                IntersectResult intersectResult = Intersect::intersect(ray, *sphere);
-                if (intersectResult.isHit) {
-                    float depth = intersectResult.distance / 10;
-                    device->setPixelColor(i, j, Color(depth, depth, 0, 1));
-                }
-            }
-        }
+        scene->RenderScene(device);
 
         device->updateRender();
     }
 
     device->destory();
+
+    delete scene;
 
     return 0;
 }

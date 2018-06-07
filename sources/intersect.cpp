@@ -5,6 +5,7 @@
  */
 
 #include "../headers/intersect.h"
+#include "../headers/cube.h"
 
 using namespace Math;
 
@@ -49,6 +50,12 @@ IntersectResult Intersect::intersect(const Ray &ray, const Sphere &sphere) {
             ret.nromal = (ret.position - sphere.center).normalize();
         }
     }
+
+    return ret;
+}
+
+IntersectResult Intersect::intersect(const Ray &ray, const Cube &cube) {
+    IntersectResult ret;
 
     return ret;
 }
