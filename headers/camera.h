@@ -15,6 +15,7 @@
  */
 class Camera {
 public:
+    virtual ~Camera();
     /*
      * 定义虚函数
      */
@@ -56,6 +57,11 @@ public:
      * 构造方法
      */
     PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &lookAt, const Math::Vector3 &up);
+
+    /*
+     * 析构方法
+     */
+    ~PerspectiveCamera();
 
     /*
      * 根据 x y 位置生成光线

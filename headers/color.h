@@ -86,6 +86,31 @@ public:
      * 重载 /
      */
     Color operator/(const float c);
+
+    /*
+     * 红色
+     */
+    static Color red();
+
+    /*
+     * 绿色
+     */
+    static Color green();
+
+    /*
+     * 蓝色
+     */
+    static Color blue();
+
+    /*
+     * 白色
+     */
+    static Color white();
+
+    /*
+     * 黑色
+     */
+    static Color black();
 };
 
 

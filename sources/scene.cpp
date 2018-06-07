@@ -13,19 +13,37 @@ using namespace Math;
 
 Scene::Scene() {
     this->camera = 0;
+    this->plane = 0;
     this->screenWidth = 0;
     this->screenHeight = 0;
 }
 
-Scene::Scene(const std::vector<Sphere> &models, Camera *camera, const int &screenWidth,
+Scene::Scene(const std::vector<Sphere *> &models, Camera *camera, Plane *plane, const int &screenWidth,
              const int &screenHeight) {
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->camera = camera;
     this->spheres = models;
+    this->plane = plane;
 }
 
 Scene::~Scene() {
+    if (!this->spheres.empty()) {
+        for (auto sphere : this->spheres) {
+            if (sphere) {
+                delete sphere;
+                sphere = 0;
+            }
+        }
+    }
+    if (this->camera) {
+        delete this->camera;
+        this->camera = 0;
+    }
+    if (this->plane) {
+        delete this->plane;
+        this->plane = 0;
+    }
 }
 
 Scene &Scene::operator=(const Scene &scene) {
@@ -44,11 +62,16 @@ void Scene::RenderScene(Device *device) {
         for (int j = 0; j < screenHeight; ++j) {
             float sy = j / (float) screenHeight;
             ray = this->camera->generateRay(sx, sy);
+
+            itRet = Intersect::intersect(ray, *plane);
+            if (itRet.isHit) {
+                device->setPixelColor(i, j, Color(1, 1, 1, 1));
+            }
+
             for (auto &sphere : this->spheres) {
-                itRet = Intersect::intersect(ray, sphere);
+                itRet = Intersect::intersect(ray, *sphere);
                 if (itRet.isHit) {
-                    float depth = 1 - itRet.distance / 15;
-                    device->setPixelColor(i, j, Color(depth, depth, depth, 1));
+                    device->setPixelColor(i, j, Color(itRet.nromal._x, itRet.nromal._y, itRet.nromal._z, 1));
                 }
             }
         }

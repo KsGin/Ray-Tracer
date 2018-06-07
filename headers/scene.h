@@ -11,6 +11,7 @@
 #include "sphere.h"
 #include "camera.h"
 #include "device.h"
+#include "plane.h"
 
 /*
  * 场景类
@@ -25,7 +26,12 @@ public:
     /*
      * 模型数组
      */
-    std::vector<Sphere> spheres;
+    std::vector<Sphere*> spheres;
+
+    /*
+     * 平面
+     */
+    Plane *plane;
 
     /*
      * 相机
@@ -40,7 +46,7 @@ public:
     /*
      * 构造方法
      */
-    Scene(const std::vector<Sphere> &models, Camera *camera, const int &screenWidth, const int &screenHeight);
+    Scene(const std::vector<Sphere*> &models, Camera *camera, Plane *plane , const int &screenWidth, const int &screenHeight);
 
     /*
      * 析构方法

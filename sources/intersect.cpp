@@ -46,7 +46,7 @@ IntersectResult Intersect::intersect(const Ray &ray, const Sphere &sphere) {
             ret.isHit = true;
             ret.geometry = SPHERE;
             ret.distance = -dotV - sqrt(discr);
-            ret.position = ray.origin + Vector3(ray.direction).scale(ret.distance, ret.distance, ret.distance);
+            ret.position = ray.origin + (ray.direction * ret.distance);
             ret.nromal = (ret.position - sphere.center).normalize();
         }
     }
@@ -57,5 +57,19 @@ IntersectResult Intersect::intersect(const Ray &ray, const Sphere &sphere) {
 IntersectResult Intersect::intersect(const Ray &ray, const Cube &cube) {
     IntersectResult ret;
 
+    return ret;
+}
+
+IntersectResult Intersect::intersect(const Ray &ray, const Plane &plane) {
+    IntersectResult ret;
+    float dt = Vector3::dot(ray.direction, plane.normal);
+    if (dt < 0) {
+        float db = Vector3::dot(plane.normal, ray.origin - (plane.normal * plane.distance));
+        ret.isHit = true;
+        ret.geometry = PLANE;
+        ret.position = ray.origin + (ray.direction * ret.distance);
+        ret.nromal = plane.normal;
+        ret.distance = -db / dt;
+    }
     return ret;
 }

@@ -11,6 +11,7 @@
 #include "ray.h"
 #include "sphere.h"
 #include "cube.h"
+#include "plane.h"
 
 /*
  * 集合类型
@@ -23,7 +24,15 @@ enum GEOMETRY {
     /*
      * 球体
      */
-    SPHERE = 1
+    SPHERE = 1,
+    /*
+     * 立方体
+     */
+    CUBE = 2,
+    /*
+     * 平面
+     */
+    PLANE = 3
 };
 
 /*
@@ -85,6 +94,11 @@ public:
      * 立方体与光线相交
      */
     static IntersectResult intersect(const Ray &ray, const Cube &cube);
+
+    /*
+     * 平面与光线相交
+     */
+    static IntersectResult intersect(const Ray &ray, const Plane &plane);
 };
 
 
