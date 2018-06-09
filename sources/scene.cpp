@@ -4,6 +4,7 @@
  * Date   : 2018/6/7
  */
 
+#include <iostream>
 #include "../headers/scene.h"
 #include "../headers/intersect.h"
 #include "../headers/color.h"
@@ -65,9 +66,12 @@ void Scene::RenderScene(Device *device) {
 
             itRet = Intersect::intersect(ray, *plane);
             if (itRet.isHit) {
-                device->setPixelColor(i, j, Color(1, 1, 1, 1));
+//                std::cout << itRet.distance << std::endl;
+//                std::cout << itRet.position._x << " " << itRet.position._y << " " << itRet.position._z << std::endl;
+                device->setPixelColor(i, j, abs(static_cast<int>(
+                                                floor(i * 0.01) +
+                                                floor(j * 0.01)) % 2) < 1 ? Color::white() : Color::black());
             }
-
             for (auto &sphere : this->spheres) {
                 itRet = Intersect::intersect(ray, *sphere);
                 if (itRet.isHit) {

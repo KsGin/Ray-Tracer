@@ -4,6 +4,7 @@
  * Date   : 2018/6/1
  */
 
+#include <iostream>
 #include "../headers/intersect.h"
 #include "../headers/cube.h"
 
@@ -67,9 +68,9 @@ IntersectResult Intersect::intersect(const Ray &ray, const Plane &plane) {
         float db = Vector3::dot(plane.normal, ray.origin - (plane.normal * plane.distance));
         ret.isHit = true;
         ret.geometry = PLANE;
-        ret.position = ray.origin + (ray.direction * ret.distance);
         ret.nromal = plane.normal;
         ret.distance = -db / dt;
+        ret.position = ray.origin + (ray.direction * ret.distance);
     }
     return ret;
 }
