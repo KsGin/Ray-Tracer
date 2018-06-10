@@ -5,6 +5,7 @@
  */
 
 #include <cmath>
+#include <sys/time.h>
 #include "../headers/device.h"
 
 Device::Device() {
@@ -116,6 +117,16 @@ Color Device::getPixelColor(const int x, const int y) {
     float g = this->pixels[idx - 3] / 255;
     float r = this->pixels[idx - 4] / 255;
     return Color(r, g, b, a);
+}
+
+void Device::updateWindowTitle(const char *title) {
+    SDL_SetWindowTitle(this->window, title);
+}
+
+long Device::getCurrentTime() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 

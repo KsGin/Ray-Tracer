@@ -58,21 +58,25 @@ Scene &Scene::operator=(const Scene &scene) {
 void Scene::RenderScene(Device *device) {
     IntersectResult itRet;
     Ray ray;
+    float minDistance;
     for (int i = 0; i < screenWidth; ++i) {
         float sx = i / (float) screenWidth;
         for (int j = 0; j < screenHeight; ++j) {
             float sy = j / (float) screenHeight;
-            ray = this->camera->generateRay(sx, sy);
 
+            minDistance = INT_MAX;
+
+            ray = this->camera->generateRay(sx, sy);
             itRet = Intersect::intersect(ray, *plane);
-            if (itRet.isHit) {
+
+            if (itRet.isHit && itRet.distance < minDistance) {
                 device->setPixelColor(i, j, abs(static_cast<int>(
-                                                floor(itRet.position._x) +
-                                                floor(itRet.position._z)) % 2) < 1 ? Color::white() : Color::black());
+                                                floor(itRet.position._x * 0.5) +
+                                                floor(itRet.position._z * 0.5)) % 2) < 1 ? Color::white() : Color::black());
             }
             for (auto &sphere : this->spheres) {
                 itRet = Intersect::intersect(ray, *sphere);
-                if (itRet.isHit) {
+                if (itRet.isHit && itRet.distance < minDistance) {
                     device->setPixelColor(i, j, Color(itRet.nromal._x, itRet.nromal._y, itRet.nromal._z, 1));
                 }
             }

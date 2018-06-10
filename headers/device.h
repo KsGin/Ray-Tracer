@@ -103,6 +103,16 @@ public:
      * 更新像素数据
      */
     void updatePixelsColor();
+
+    /*
+     * 更新窗口标题
+     */
+    void updateWindowTitle(const char* title);
+
+    /*
+     * 获得当前系统时间（毫秒）
+     */
+    long getCurrentTime();
 };
 
 
