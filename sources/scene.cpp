@@ -66,11 +66,9 @@ void Scene::RenderScene(Device *device) {
 
             itRet = Intersect::intersect(ray, *plane);
             if (itRet.isHit) {
-//                std::cout << itRet.distance << std::endl;
-//                std::cout << itRet.position._x << " " << itRet.position._y << " " << itRet.position._z << std::endl;
                 device->setPixelColor(i, j, abs(static_cast<int>(
-                                                floor(i * 0.01) +
-                                                floor(j * 0.01)) % 2) < 1 ? Color::white() : Color::black());
+                                                floor(itRet.position._x) +
+                                                floor(itRet.position._z)) % 2) < 1 ? Color::white() : Color::black());
             }
             for (auto &sphere : this->spheres) {
                 itRet = Intersect::intersect(ray, *sphere);
