@@ -24,6 +24,11 @@ public:
     float distance;
 
     /*
+     * 反射度
+     */
+    float reflectiveness;
+
+    /*
      * 空构造方法
      */
     Plane();
@@ -36,7 +41,7 @@ public:
     /*
      * 赋值构造方法
      */
-    Plane(const Math::Vector3& normal , const float distance);
+    Plane(const Math::Vector3& normal , const float &distance , const float &reflectiveness);
 
     /*
      * 对象拷贝

@@ -26,6 +26,11 @@ public:
     float radius;
 
     /*
+     * 反射度
+     */
+    float reflectiveness;
+
+    /*
      * 空构造方法
      */
     Sphere();
@@ -33,7 +38,7 @@ public:
     /*
      * 值赋值构造方法
      */
-    Sphere(const Math::Vector3 &center, const float &radius);
+    Sphere(const Math::Vector3 &center, const float &radius , const float &reflectiveness);
 
     /*
      * 对象拷贝构造方法

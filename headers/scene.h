@@ -26,7 +26,7 @@ public:
     /*
      * 模型数组
      */
-    std::vector<Sphere*> spheres;
+    std::vector<Sphere *> spheres;
 
     /*
      * 平面
@@ -46,7 +46,8 @@ public:
     /*
      * 构造方法
      */
-    Scene(const std::vector<Sphere*> &models, Camera *camera, Plane *plane , const int &screenWidth, const int &screenHeight);
+    Scene(const std::vector<Sphere *> &models, Camera *camera, Plane *plane, const int &screenWidth,
+          const int &screenHeight);
 
     /*
      * 析构方法
@@ -61,7 +62,7 @@ public:
     /*
      * 渲染
      */
-    void RenderScene(Device *device);
+    void RenderScene(Device *device, int maxReflect);
 };
 
 

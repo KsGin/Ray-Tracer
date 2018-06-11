@@ -22,20 +22,20 @@ int main() {
 
     device->show();
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, 5), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 100);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 100);
 
     vector<Sphere *> models = vector<Sphere *>(0);
-    models.push_back(new Sphere(Vector3(0, 1, 0), 1));
-    models.push_back(new Sphere(Vector3(3, 1, 1), 1));
-    models.push_back(new Sphere(Vector3(-3, 1, 1), 1));
+    models.push_back(new Sphere(Vector3(0, 2, 0), 2, 1));
+    models.push_back(new Sphere(Vector3(3, 1, 1), 1, 1));
+    models.push_back(new Sphere(Vector3(-3, 1, 1), 1, 1));
 
-    Plane *plane = new Plane(Vector3(0, 1, 0), 0);
+    Plane *plane = new Plane(Vector3(0, 1, 0), 0, 0);
     Scene *scene = new Scene(models, camera, plane, width, height);
 
 
     while (!device->windowShouldClose()) {
 
-        scene->RenderScene(device);
+        scene->RenderScene(device, 5);
 
         device->updateRender();
     }

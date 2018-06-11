@@ -55,7 +55,7 @@ Scene &Scene::operator=(const Scene &scene) {
     return *this;
 }
 
-void Scene::RenderScene(Device *device) {
+void Scene::RenderScene(Device *device , int maxReflect) {
     IntersectResult itRet;
     Ray ray;
     float minDistance;
