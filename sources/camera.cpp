@@ -17,7 +17,9 @@ PerspectiveCamera::PerspectiveCamera() {
 }
 
 PerspectiveCamera::PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &lookAt,
-                                     const Math::Vector3 &up) {
+                                     const Math::Vector3 &up , float near , float far) {
+    this->near = near;
+    this->far = far;
     this->eye = eye;
     this->front = (lookAt - this->eye).normalize();
     this->right = Vector3::cross(front, up).normalize();

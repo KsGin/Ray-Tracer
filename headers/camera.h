@@ -15,7 +15,25 @@
  */
 class Camera {
 public:
+    /*
+     * 近平面
+     */
+    float near;
+    /*
+     * 远平面
+     */
+    float far;
+
+    /*
+     * eye 坐标
+     */
+    Math::Vector3 eye;
+
+    /*
+     * 空构造方法
+     */
     virtual ~Camera();
+
     /*
      * 定义虚函数
      */
@@ -30,10 +48,6 @@ class PerspectiveCamera : public Camera {
      * 缩放
      */
     float fovScale;
-    /*
-     * eye 坐标
-     */
-    Math::Vector3 eye;
     /*
      * 方向向量 up
      */
@@ -56,7 +70,8 @@ public:
     /*
      * 构造方法
      */
-    PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &lookAt, const Math::Vector3 &up);
+    PerspectiveCamera(float fov, const Math::Vector3 &eye, const Math::Vector3 &lookAt, const Math::Vector3 &up,
+                      float near, float far);
 
     /*
      * 析构方法
