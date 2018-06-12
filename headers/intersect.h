@@ -59,7 +59,7 @@ public:
     /*
      * 法线
      */
-    Math::Vector3 nromal;
+    Math::Vector3 normal;
 
 public:
     /*

@@ -36,7 +36,7 @@ Ray PerspectiveCamera::generateRay(float x, float y) {
     float scaleX = static_cast<float>((x - 0.5) * this->fovScale);
     Vector3 r = this->right * scaleX;
 
-    float scaleY = static_cast<float>((-y + 0.5) * this->fovScale);
+    float scaleY = static_cast<float>((y - 0.5) * this->fovScale);
     Vector3 u = this->up * scaleY;
 
     return Ray(eye, (front + r + u).normalize());

@@ -88,6 +88,11 @@ public:
     Color operator/(const float c);
 
     /*
+     * 限制颜色在 0 - 1 之间
+     */
+    Color &modulate();
+
+    /*
      * 红色
      */
     static Color red();

@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "device.h"
 #include "plane.h"
+#include "light.h"
 
 /*
  * 场景类
@@ -39,6 +40,11 @@ public:
     Camera *camera;
 
     /*
+     * 光线
+     */
+    DirectionLight *directionLight;
+
+    /*
      * 构造方法
      */
     Scene();
@@ -46,7 +52,9 @@ public:
     /*
      * 构造方法
      */
-    Scene(const std::vector<Sphere *> &models, Camera *camera, Plane *plane, const int &screenWidth,
+    Scene(const std::vector<Sphere *> &models,
+          Camera *camera, Plane *plane, DirectionLight *directionLight,
+          const int &screenWidth,
           const int &screenHeight);
 
     /*

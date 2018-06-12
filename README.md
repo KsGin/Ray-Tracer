@@ -22,6 +22,7 @@
     + `ray.h`：`Ray` 类头文件，定义光线数据及基本操作
     + `scene.h`：`Scene` 类头文件（核心类），封装场景数据与基本操作（渲染）
     + `sphere.h`：`Sphere` 类头文件，封装球体数据及基本操作
+    + `light.h`: `LightMaterial` , `DirectionLight` 类封装即基本操作
 2. `include/`：库文件夹
     + `math/`：[自用数学库](https://github.com/KsGin/Math-Lib)
         + `vector.hpp`：向量库，封装 `Vector2` ，`Vector2`
@@ -36,6 +37,7 @@
     + `ray.cpp`：`Ray` 类源文件，定义光线数据及基本操作
     + `scene.cpp`：`Scene` 类源文件（核心类），封装场景数据与基本操作（渲染）
     + `sphere.cpp`：`Sphere` 类源文件，封装球体数据及基本操作
+    + `light.cpp`: `LightMaterial` , `DirectionLight` 类封装即基本操作
 
 4. `main.cpp` ：main 文件（入口）
 
