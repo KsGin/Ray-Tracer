@@ -43,7 +43,6 @@ int main() {
         device->updateRender();
     }
 
-
     device->destory();
 
     for (auto sphere : spheres) {

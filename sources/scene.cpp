@@ -58,7 +58,7 @@ void Scene::RenderScene(Device *device, int maxReflect) {
                 itRet = Intersect::intersect(ray, *sphere);
                 if (itRet.isHit && itRet.distance < minDistance && itRet.distance > camera->near) {
                     minDistance = itRet.distance;
-                    device->setPixelColor(i, j, directionLight->sample(ray, itRet));
+                    device->setPixelColor(i, j, directionLight->sample(ray, itRet).modulate());
                 }
             }
 
