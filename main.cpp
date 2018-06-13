@@ -22,7 +22,7 @@ int main() {
 
     device->show();
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 2, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
 
     vector<Sphere *> spheres = vector<Sphere *>(0);
     spheres.push_back(new Sphere(Vector3(0, 2, 0), 2));
@@ -41,6 +41,7 @@ int main() {
         scene->renderScene(device, 3);
 
         device->updateRender();
+
     }
 
     device->destory();
