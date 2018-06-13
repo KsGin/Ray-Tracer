@@ -7,7 +7,8 @@
 部分截图：
 
 1. 单光源（定向光）反射
-![just reflect](https://image.ibb.co/hwNRFJ/reflect.png)
+
+    ![just reflect](https://image.ibb.co/hwNRFJ/reflect.png)
 
 内容实现：
 
