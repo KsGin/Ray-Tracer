@@ -18,6 +18,12 @@
  * 场景类
  */
 class Scene {
+
+    /*
+     * 最大反射次数
+     */
+    float maxReflect;
+
 public:
     /*
      * 屏幕大小
@@ -70,7 +76,12 @@ public:
     /*
      * 渲染
      */
-    void RenderScene(Device *device, int maxReflect);
+    void renderScene(Device *device, int maxReflect);
+
+    /*
+     * 递归追踪
+     */
+    Color rayTrace(const Ray &ray, float maxReflect);
 };
 
 

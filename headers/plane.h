@@ -8,6 +8,7 @@
 #define RAY_TRACER_PLANE_H
 
 #include "../include/math/vector.hpp"
+#include "material.h"
 
 /*
  * 平面类
@@ -24,11 +25,6 @@ public:
     float distance;
 
     /*
-     * 反射度
-     */
-    float reflectiveness;
-
-    /*
      * 空构造方法
      */
     Plane();
@@ -41,17 +37,17 @@ public:
     /*
      * 赋值构造方法
      */
-    Plane(const Math::Vector3& normal , const float &distance , const float &reflectiveness);
+    Plane(const Math::Vector3 &normal, const float &distance);
 
     /*
      * 对象拷贝
      */
-    Plane(const Plane& plane);
+    Plane(const Plane &plane);
 
     /*
      * 重载 =
      */
-    Plane &operator=(const Plane& plane);
+    Plane &operator=(const Plane &plane);
 };
 
 

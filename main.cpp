@@ -22,23 +22,23 @@ int main() {
 
     device->show();
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 5, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
 
     vector<Sphere *> spheres = vector<Sphere *>(0);
-    spheres.push_back(new Sphere(Vector3(0, 2, 0), 2, 1));
-    spheres.push_back(new Sphere(Vector3(5, 2, 2), 2, 1));
-    spheres.push_back(new Sphere(Vector3(-5, 2, 2), 2, 1));
+    spheres.push_back(new Sphere(Vector3(0, 2, 0), 2));
+    spheres.push_back(new Sphere(Vector3(5, 2, 2), 2));
+    spheres.push_back(new Sphere(Vector3(-5, 2, 2), 2));
 
-    Plane *plane = new Plane(Vector3(0, 1, 0), 0, 0);
+    Plane *plane = new Plane(Vector3(0, 1, 0), 0);
 
-    DirectionLight *dLight = new DirectionLight(Vector3(0, 1, 0).normalize(), Color(1, 1, 0.6, 1), 1, 1, 32);
+    DirectionLight *dLight = new DirectionLight(Vector3(0, -1, 0).normalize(), Color(1, 1, 1, 1), 1, 1, 32);
 
     Scene *scene = new Scene(spheres, camera, plane, dLight, width, height);
 
 
     while (!device->windowShouldClose()) {
 
-        scene->RenderScene(device, 5);
+        scene->renderScene(device, 3);
 
         device->updateRender();
     }

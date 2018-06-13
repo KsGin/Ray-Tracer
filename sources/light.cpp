@@ -51,9 +51,10 @@ DirectionLight &DirectionLight::operator=(const DirectionLight &dLight) {
 }
 
 Color DirectionLight::sample(const Ray &ray, const IntersectResult &itRet) {
-    float NdotL = Vector3::dot(this->direction, itRet.normal);
-    float NdotH = Vector3::dot((this->direction - ray.direction).normalize(), itRet.normal);
-    float diffuseIntensity = this->diffuse * NdotL > 0 ? NdotL : 0;
+    Vector3 negateLightDirection = Vector3(this->direction).negate();
+    float NdotL = Vector3::dot(negateLightDirection, itRet.normal);
+    float NdotH = Vector3::dot((negateLightDirection - ray.direction).normalize(), itRet.normal);
+    float diffuseIntensity = this->diffuse * (NdotL > 0 ? NdotL : 0);
     float specularIntensity = this->specular * pow(NdotH > 0 ? NdotH : 0, this->shininess);
     return this->color * (diffuseIntensity + specularIntensity);
 }

@@ -42,37 +42,50 @@ Scene &Scene::operator=(const Scene &scene) {
     return *this;
 }
 
-void Scene::RenderScene(Device *device, int maxReflect) {
-    IntersectResult itRet;
+void Scene::renderScene(Device *device, int maxReflect) {
+
+    this->maxReflect = maxReflect;
+
     Ray ray;
-    float minDistance;
     for (int i = 0; i < screenWidth; ++i) {
         float sx = i / (float) screenWidth;
         for (int j = 0; j < screenHeight; ++j) {
             float sy = 1 - j / (float) screenHeight;
-
-            minDistance = camera->far;   // 距离超过远平面不可见
-
             ray = this->camera->generateRay(sx, sy);
-            for (auto &sphere : this->spheres) {
-                itRet = Intersect::intersect(ray, *sphere);
-                if (itRet.isHit && itRet.distance < minDistance && itRet.distance > camera->near) {
-                    minDistance = itRet.distance;
-                    device->setPixelColor(i, j, directionLight->sample(ray, itRet).modulate());
-                }
-            }
-
-            itRet = Intersect::intersect(ray, *plane);
-            if (itRet.isHit && itRet.distance <= minDistance && itRet.distance > camera->near) {
-                Color lightColor = directionLight->sample(ray, itRet);
-                Color textureColor = abs(static_cast<int>(
-                                         floor(itRet.position._x * 0.5) +
-                                         floor(itRet.position._z * 0.5)) % 2) < 1 ?
-                                     Color::white() : Color::black();
-                device->setPixelColor(i, j, (lightColor * textureColor).modulate());
-            }
-
+            Color pixelColor = this->rayTrace(ray, maxReflect);
+            device->setPixelColor(i, j, pixelColor);
         }
     }
+}
+
+Color Scene::rayTrace(const Ray &ray, float maxReflect) {
+    IntersectResult tmpItRet, itRet;
+
+    itRet.distance = maxReflect == this->maxReflect ? this->camera->far : INT_MAX;
+
+    for (auto &sphere : this->spheres) {
+        tmpItRet = Intersect::intersect(ray, *sphere);
+        if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
+            itRet = tmpItRet;
+        }
+    }
+
+    tmpItRet = Intersect::intersect(ray, *plane);
+    if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
+        itRet = tmpItRet;
+    }
+
+    if (itRet.geometry == NOGEO) return Color::black();
+    float reflectiveness = Material::getReflectiveness(itRet.geometry);
+    Color thisColor = directionLight->sample(ray, itRet).modulate() * (1 - reflectiveness) *
+                      Material::getColor(itRet.geometry, itRet.position);
+
+    if (maxReflect > 0 && reflectiveness > 0) {
+        Ray reflectRay = Ray(itRet.position,
+                             ray.direction - itRet.normal * (Vector3::dot(ray.direction, itRet.normal)) * 2);
+        thisColor = thisColor + rayTrace(reflectRay, maxReflect - 1) * reflectiveness;
+    }
+
+    return thisColor;
 }
 

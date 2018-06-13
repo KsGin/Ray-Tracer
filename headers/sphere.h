@@ -8,6 +8,7 @@
 #define RAY_TRACER_SPHERE_H
 
 #include "../include/math/vector.hpp"
+#include "material.h"
 
 /*
  * 球体类
@@ -26,11 +27,6 @@ public:
     float radius;
 
     /*
-     * 反射度
-     */
-    float reflectiveness;
-
-    /*
      * 空构造方法
      */
     Sphere();
@@ -38,7 +34,7 @@ public:
     /*
      * 值赋值构造方法
      */
-    Sphere(const Math::Vector3 &center, const float &radius , const float &reflectiveness);
+    Sphere(const Math::Vector3 &center, const float &radius);
 
     /*
      * 对象拷贝构造方法

@@ -10,30 +10,8 @@
 #include "../include/math/vector.hpp"
 #include "ray.h"
 #include "sphere.h"
-#include "cube.h"
 #include "plane.h"
-
-/*
- * 集合类型
- */
-enum GEOMETRY {
-    /*
-     * 空
-     */
-    NOGEO = 0,
-    /*
-     * 球体
-     */
-    SPHERE = 1,
-    /*
-     * 立方体
-     */
-    CUBE = 2,
-    /*
-     * 平面
-     */
-    PLANE = 3
-};
+#include "material.h"
 
 /*
  * 相交结果
@@ -76,6 +54,7 @@ public:
      * 重载 =
      */
     IntersectResult &operator=(const IntersectResult &result);
+
 };
 
 /*
@@ -88,12 +67,6 @@ public:
      * 球与光线相交
      */
     static IntersectResult intersect(const Ray &ray, const Sphere &sphere);
-
-
-    /*
-     * 立方体与光线相交
-     */
-    static IntersectResult intersect(const Ray &ray, const Cube &cube);
 
     /*
      * 平面与光线相交
