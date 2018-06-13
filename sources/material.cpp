@@ -34,3 +34,15 @@ Color Material::getColor(GEOMETRY geometry, const Math::Vector3 &position) {
     }
     return Color::black();
 }
+
+float Material::getRefractiveness(GEOMETRY geometry) {
+    switch (geometry) {
+
+        case NOGEO:
+            return 0;
+        case SPHERE:
+            return 1;
+        case PLANE:
+            return 1;
+    }
+}

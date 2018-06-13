@@ -22,18 +22,19 @@ int main() {
 
     device->show();
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 2, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, 10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
 
     vector<Sphere *> spheres = vector<Sphere *>(0);
     spheres.push_back(new Sphere(Vector3(0, 2, 0), 2));
     spheres.push_back(new Sphere(Vector3(5, 2, 2), 2));
     spheres.push_back(new Sphere(Vector3(-5, 2, 2), 2));
 
-    Plane *plane = new Plane(Vector3(0, 1, 0), 0);
+    vector<Plane *> planes = vector<Plane *>(0);
+    planes.push_back(new Plane(Vector3(0, 1, 0), 0));
 
     DirectionLight *dLight = new DirectionLight(Vector3(0, -1, 0).normalize(), Color(1, 1, 1, 1), 1, 1, 32);
 
-    Scene *scene = new Scene(spheres, camera, plane, dLight, width, height);
+    Scene *scene = new Scene(spheres, planes, camera, dLight, width, height);
 
 
     while (!device->windowShouldClose()) {
@@ -52,8 +53,13 @@ int main() {
             sphere = 0;
         }
     }
+    for (auto plane : planes) {
+        if (plane) {
+            delete plane;
+            plane = 0;
+        }
+    }
     delete camera;
-    delete plane;
     delete dLight;
     delete scene;
 

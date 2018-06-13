@@ -38,7 +38,7 @@ public:
     /*
      * 平面
      */
-    Plane *plane;
+    std::vector<Plane *> planes;
 
     /*
      * 相机
@@ -58,8 +58,8 @@ public:
     /*
      * 构造方法
      */
-    Scene(const std::vector<Sphere *> &models,
-          Camera *camera, Plane *plane, DirectionLight *directionLight,
+    Scene(const std::vector<Sphere *> &models, std::vector<Plane *> planes,
+          Camera *camera, DirectionLight *directionLight,
           const int &screenWidth,
           const int &screenHeight);
 

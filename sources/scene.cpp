@@ -15,19 +15,19 @@ using namespace Math;
 Scene::Scene() {
     this->directionLight = 0;
     this->camera = 0;
-    this->plane = 0;
     this->screenWidth = 0;
     this->screenHeight = 0;
 }
 
-Scene::Scene(const std::vector<Sphere *> &models, Camera *camera, Plane *plane, DirectionLight *directionLight,
+Scene::Scene(const std::vector<Sphere *> &models, std::vector<Plane *> planes, Camera *camera,
+             DirectionLight *directionLight,
              const int &screenWidth,
              const int &screenHeight) {
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->camera = camera;
     this->spheres = models;
-    this->plane = plane;
+    this->planes = planes;
     this->directionLight = directionLight;
 }
 
@@ -37,6 +37,7 @@ Scene::~Scene() {
 Scene &Scene::operator=(const Scene &scene) {
     this->spheres = std::move(scene.spheres);
     this->camera = std::move(scene.camera);
+    this->planes = std::move(scene.planes);
     this->screenWidth = scene.screenWidth;
     this->screenHeight = scene.screenHeight;
     return *this;
@@ -70,10 +71,13 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
         }
     }
 
-    tmpItRet = Intersect::intersect(ray, *plane);
-    if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
-        itRet = tmpItRet;
+    for (auto &plane : this->planes) {
+        tmpItRet = Intersect::intersect(ray, *plane);
+        if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
+            itRet = tmpItRet;
+        }
     }
+
 
     if (itRet.geometry == NOGEO) return Color::black();
     float reflectiveness = Material::getReflectiveness(itRet.geometry);

@@ -39,6 +39,11 @@ public:
     static float getReflectiveness(GEOMETRY geometry);
 
     /*
+     * 折射度
+     */
+    static float getRefractiveness(GEOMETRY geometry);
+
+    /*
      * 颜色
      */
     static Color getColor(GEOMETRY geometry , const Math::Vector3& position);
