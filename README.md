@@ -12,7 +12,7 @@
 
 2. 多光源（点光源）反射
 
-    ![just reflect2](https://image.ibb.co/hq7kCy/WX20180614_113758_2x.png)
+    ![just reflect2](https://image.ibb.co/dEi0Cy/WX20180614_114750_2x.png)
 
 内容实现：
 
