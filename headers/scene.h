@@ -8,11 +8,10 @@
 #define RAY_TRACER_SCENE_H
 
 #include <vector>
-#include "sphere.h"
 #include "camera.h"
 #include "device.h"
-#include "plane.h"
 #include "light.h"
+#include "model.h"
 
 /*
  * 场景类
@@ -33,12 +32,7 @@ public:
     /*
      * 模型数组
      */
-    std::vector<Sphere *> spheres;
-
-    /*
-     * 平面
-     */
-    std::vector<Plane *> planes;
+    std::vector<Model *> models;
 
     /*
      * 相机
@@ -46,9 +40,9 @@ public:
     Camera *camera;
 
     /*
-     * 光线
+     * 光源
      */
-    DirectionLight *directionLight;
+    std::vector<Light *> lights;
 
     /*
      * 构造方法
@@ -58,8 +52,9 @@ public:
     /*
      * 构造方法
      */
-    Scene(const std::vector<Sphere *> &models, std::vector<Plane *> planes,
-          Camera *camera, DirectionLight *directionLight,
+    Scene(const std::vector<Model *> &models,
+          const std::vector<Light *> &lights,
+          Camera *camera,
           const int &screenWidth,
           const int &screenHeight);
 

@@ -8,11 +8,11 @@
 
 using namespace Math;
 
-LightMaterial::LightMaterial() {
+Light::Light() {
 
 }
 
-LightMaterial::~LightMaterial() {
+Light::~Light() {
 
 }
 
@@ -60,3 +60,36 @@ Color DirectionLight::sample(const Ray &ray, const IntersectResult &itRet) {
 }
 
 
+PointLight::PointLight(const Vector3 &position, const Color &color, float diffuse, float specular, float shininess) {
+    this->position = position;
+    this->color = color;
+    this->shininess = shininess;
+    this->specular = specular;
+    this->diffuse = diffuse;
+}
+
+PointLight::PointLight(const PointLight &pLight) {
+    this->position = pLight.position;
+    this->color = pLight.color;
+    this->shininess = pLight.shininess;
+    this->specular = pLight.specular;
+    this->diffuse = pLight.diffuse;
+}
+
+PointLight &PointLight::operator=(const PointLight &pLight) {
+    this->position = pLight.position;
+    this->color = pLight.color;
+    this->shininess = pLight.shininess;
+    this->specular = pLight.specular;
+    this->diffuse = pLight.diffuse;
+    return *this;
+}
+
+Color PointLight::sample(const Ray &ray, const IntersectResult &itRet) {
+    Vector3 lightDirection = Vector3(this->position - itRet.position).normalize();
+    float NdotL = Vector3::dot(lightDirection, itRet.normal);
+    float NdotH = Vector3::dot((lightDirection - ray.direction).normalize(), itRet.normal);
+    float diffuseIntensity = this->diffuse * (NdotL > 0 ? NdotL : 0);
+    float specularIntensity = this->specular * pow(NdotH > 0 ? NdotH : 0, this->shininess);
+    return this->color * (diffuseIntensity + specularIntensity);
+}

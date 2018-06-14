@@ -6,38 +6,36 @@
 
 #include <iostream>
 #include "../headers/scene.h"
-#include "../headers/intersect.h"
 #include "../headers/color.h"
 #include "../include/math/vector.hpp"
+#include "../headers/model.h"
 
 using namespace Math;
 
 Scene::Scene() {
-    this->directionLight = 0;
     this->camera = 0;
     this->screenWidth = 0;
     this->screenHeight = 0;
 }
 
-Scene::Scene(const std::vector<Sphere *> &models, std::vector<Plane *> planes, Camera *camera,
-             DirectionLight *directionLight,
+Scene::Scene(const std::vector<Model *> &models,
+             const std::vector<Light *> &lights,
+             Camera *camera,
              const int &screenWidth,
              const int &screenHeight) {
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->camera = camera;
-    this->spheres = models;
-    this->planes = planes;
-    this->directionLight = directionLight;
+    this->models = models;
+    this->lights = lights;
 }
 
 Scene::~Scene() {
 }
 
 Scene &Scene::operator=(const Scene &scene) {
-    this->spheres = std::move(scene.spheres);
     this->camera = std::move(scene.camera);
-    this->planes = std::move(scene.planes);
+    this->models = std::move(scene.models);
     this->screenWidth = scene.screenWidth;
     this->screenHeight = scene.screenHeight;
     return *this;
@@ -64,25 +62,24 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     itRet.distance = maxReflect == this->maxReflect ? this->camera->far : INT_MAX;
 
-    for (auto &sphere : this->spheres) {
-        tmpItRet = Intersect::intersect(ray, *sphere);
+    int idx = 0, cut = idx;
+    for (auto &model : this->models) {
+        tmpItRet = model->intersect(ray);
         if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
             itRet = tmpItRet;
+            cut = idx;
         }
+        idx++;
     }
-
-    for (auto &plane : this->planes) {
-        tmpItRet = Intersect::intersect(ray, *plane);
-        if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
-            itRet = tmpItRet;
-        }
-    }
-
 
     if (itRet.geometry == NOGEO) return Color::black();
-    float reflectiveness = Material::getReflectiveness(itRet.geometry);
-    Color thisColor = directionLight->sample(ray, itRet).modulate() * (1 - reflectiveness) *
-                      Material::getColor(itRet.geometry, itRet.position);
+
+    float reflectiveness = models[cut]->getReflectiveness();
+    Color thisColor = models[cut]->getColor(itRet) * (1 - reflectiveness);
+
+    for (auto &light : this->lights) {
+        thisColor = (thisColor + light->sample(ray, itRet)).modulate();
+    }
 
     if (maxReflect > 0 && reflectiveness > 0) {
         Ray reflectRay = Ray(itRet.position,
