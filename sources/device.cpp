@@ -80,9 +80,6 @@ void Device::destory() {
 }
 
 void Device::updateRender() {
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) isQuit = true;
-    }
     updatePixelsColor();
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);
@@ -127,6 +124,12 @@ long Device::getCurrentTime() {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+void Device::handleEvent() {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) isQuit = true;
+    }
 }
 
 

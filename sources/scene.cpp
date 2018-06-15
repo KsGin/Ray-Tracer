@@ -76,10 +76,13 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     float reflectiveness = models[cut]->getReflectiveness();
     Color thisColor = models[cut]->getColor(itRet) * (1 - reflectiveness);
+    Color lightColor = Color::black();
 
     for (auto &light : this->lights) {
-        thisColor = (thisColor + light->sample(ray, itRet)).modulate();
+        lightColor = (lightColor + light->sample(ray, itRet)).modulate();
     }
+
+    thisColor = thisColor * lightColor * (camera->far - camera->near);
 
     if (maxReflect > 0 && reflectiveness > 0) {
         Ray reflectRay = Ray(itRet.position,

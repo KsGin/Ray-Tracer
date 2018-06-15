@@ -86,10 +86,15 @@ PointLight &PointLight::operator=(const PointLight &pLight) {
 }
 
 Color PointLight::sample(const Ray &ray, const IntersectResult &itRet) {
-    Vector3 lightDirection = Vector3(this->position - itRet.position).normalize();
+    Vector3 delta = this->position - itRet.position;
+    float r = delta.length();
+    float attenuation = 1 / (r * r);
+    Vector3 lightDirection = delta.normalize();
+
     float NdotL = Vector3::dot(lightDirection, itRet.normal);
     float NdotH = Vector3::dot((lightDirection - ray.direction).normalize(), itRet.normal);
     float diffuseIntensity = this->diffuse * (NdotL > 0 ? NdotL : 0);
     float specularIntensity = this->specular * pow(NdotH > 0 ? NdotH : 0, this->shininess);
-    return this->color * (diffuseIntensity + specularIntensity);
+
+    return this->color * (diffuseIntensity + specularIntensity) * attenuation;
 }

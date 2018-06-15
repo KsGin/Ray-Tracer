@@ -21,28 +21,29 @@ int main() {
 
     device->show();
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 3, -10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 10, -10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
 
     vector<Model *> models = vector<Model *>(0);
-    models.push_back(new Sphere(Vector3(0, 2, 0), -2, 0.2, Color(1, 0, 0, 1)));
-    models.push_back(new Sphere(Vector3(5, 2, -2), -2, 0.2, Color(0, 1, 0, 1)));
-    models.push_back(new Sphere(Vector3(-5, 2, -2), -2, 0.2, Color(0, 0, 1, 1)));
-    models.push_back(new Plane(Vector3(0, 1, 0), 0, 0.2, Color::black()));
-//    models.push_back(new Plane(Vector3(0, 0, -1), -10, 0.2, Color::black()));
+    models.push_back(new Sphere(Vector3(0, 2, 0), 2, 0.2, Color::red()));
+    models.push_back(new Sphere(Vector3(5, 2, -2), 2, 0.2, Color::green()));
+    models.push_back(new Sphere(Vector3(-5, 2, -2), 2, 0.2, Color::blue()));
+    models.push_back(new Plane(Vector3(0, 1, 0), 0, 0.1, Color::black()));
+    models.push_back(new Plane(Vector3(0, 0, -1), -10, 0.1, Color::black()));
+    models.push_back(new Plane(Vector3(1, 0, 0), -10, 0.1, Color::black()));
 
     vector<Light *> lights = vector<Light *>(0);
-    lights.push_back(new PointLight(Vector3(10, 10, 0), Color(1, 0, 0, 1),  0.1, 1, 32));
-    lights.push_back(new PointLight(Vector3(-10, 10, 0), Color(0, 1, 0, 1), 0.1, 1, 32));
-    lights.push_back(new PointLight(Vector3(0, 10, 0), Color(0, 0, 1, 1),   0.1, 1, 32));
+    lights.push_back(new PointLight(Vector3(-5, 5, -5), Color(1, 0.2, 0.2, 1), 0.3, 1, 64));
+    lights.push_back(new PointLight(Vector3(5, 5, -5), Color(0.2, 0.2, 1, 1), 0.3, 1, 64));
+    lights.push_back(new PointLight(Vector3(0, 10, -5), Color(0.2, 1, 0.2, 1), 0.3, 1, 64));
 
     Scene *scene = new Scene(models, lights, camera, width, height);
 
+    // 渲染
+    scene->renderScene(device, 3);
+    device->updateRender();
+
     while (!device->windowShouldClose()) {
-
-        scene->renderScene(device, 3);
-
-        device->updateRender();
-
+        device->handleEvent();
     }
 
     device->destory();

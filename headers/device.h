@@ -113,6 +113,11 @@ public:
      * 获得当前系统时间（毫秒）
      */
     long getCurrentTime();
+
+    /*
+     * 事件处理
+     */
+    void handleEvent();
 };
 
 
