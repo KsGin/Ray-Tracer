@@ -104,9 +104,15 @@ public:
     Math::Vector3 position;
 
     /*
+     * 最远辐射位置
+     */
+    float far;
+
+    /*
      * 值构造
      */
-    PointLight(const Math::Vector3 &position, const Color &color, float diffuse, float specular, float shininess);
+    PointLight(const Math::Vector3 &position, const Color &color, float diffuse, float specular, float shininess,
+               float far);
 
     /*
      * 对象构造
@@ -124,5 +130,45 @@ public:
     Color sample(const Ray &ray, const IntersectResult &itRet);
 };
 
+/*
+ * 环境光
+ */
+class AmbientLight : public Light {
+public:
+    /*
+     * 环境光亮度
+     */
+    float ambientIntensity;
+
+    /*
+     * 空构造
+     */
+    AmbientLight();
+
+    /*
+     * 空析构
+     */
+    ~AmbientLight();
+
+    /*
+     * 构造
+     */
+    AmbientLight(float ambientIntensity);
+
+    /*
+     * 对象构造
+     */
+    AmbientLight(const AmbientLight &ambientLight);
+
+    /*
+     * 重载 =
+     */
+    AmbientLight &operator=(const AmbientLight &ambientLight);
+
+    /*
+     * 颜色取样
+     */
+    Color sample(const Ray &ray, const IntersectResult &itRet);
+};
 
 #endif //RAY_TRACER_LIGHT_H

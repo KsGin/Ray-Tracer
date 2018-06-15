@@ -60,12 +60,14 @@ Color DirectionLight::sample(const Ray &ray, const IntersectResult &itRet) {
 }
 
 
-PointLight::PointLight(const Vector3 &position, const Color &color, float diffuse, float specular, float shininess) {
+PointLight::PointLight(const Vector3 &position, const Color &color, float diffuse, float specular, float shininess,
+                       float far) {
     this->position = position;
     this->color = color;
     this->shininess = shininess;
     this->specular = specular;
     this->diffuse = diffuse;
+    this->far = far;
 }
 
 PointLight::PointLight(const PointLight &pLight) {
@@ -74,6 +76,7 @@ PointLight::PointLight(const PointLight &pLight) {
     this->shininess = pLight.shininess;
     this->specular = pLight.specular;
     this->diffuse = pLight.diffuse;
+    this->far = pLight.far;
 }
 
 PointLight &PointLight::operator=(const PointLight &pLight) {
@@ -82,13 +85,14 @@ PointLight &PointLight::operator=(const PointLight &pLight) {
     this->shininess = pLight.shininess;
     this->specular = pLight.specular;
     this->diffuse = pLight.diffuse;
+    this->far = pLight.far;
     return *this;
 }
 
 Color PointLight::sample(const Ray &ray, const IntersectResult &itRet) {
     Vector3 delta = this->position - itRet.position;
     float r = delta.length();
-    float attenuation = 1 / (r * r);
+    float attenuation = 1 / (r * r) * this->far;
     Vector3 lightDirection = delta.normalize();
 
     float NdotL = Vector3::dot(lightDirection, itRet.normal);
@@ -97,4 +101,29 @@ Color PointLight::sample(const Ray &ray, const IntersectResult &itRet) {
     float specularIntensity = this->specular * pow(NdotH > 0 ? NdotH : 0, this->shininess);
 
     return this->color * (diffuseIntensity + specularIntensity) * attenuation;
+}
+
+AmbientLight::AmbientLight() {
+    this->ambientIntensity = 0;
+}
+
+AmbientLight::~AmbientLight() {
+
+}
+
+AmbientLight::AmbientLight(float ambientIntensity) {
+    this->ambientIntensity = ambientIntensity;
+}
+
+Color AmbientLight::sample(const Ray &ray, const IntersectResult &itRet) {
+    return Color::white() * this->ambientIntensity;
+}
+
+AmbientLight::AmbientLight(const AmbientLight &ambientLight) {
+    this->ambientIntensity = ambientLight.ambientIntensity;
+}
+
+AmbientLight &AmbientLight::operator=(const AmbientLight &ambientLight) {
+    this->ambientIntensity = ambientLight.ambientIntensity;
+    return *this;
 }
