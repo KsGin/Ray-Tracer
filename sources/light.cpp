@@ -50,8 +50,20 @@ DirectionLight &DirectionLight::operator=(const DirectionLight &dLight) {
     return *this;
 }
 
-Color DirectionLight::sample(const Ray &ray, const IntersectResult &itRet) {
+Color
+DirectionLight::sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) {
     Vector3 negateLightDirection = Vector3(this->direction).negate();
+
+    // 处理阴影
+    Ray shadowRay = Ray(itRet.position, negateLightDirection);
+    IntersectResult tmpItRet;
+    for (auto &model : models) {
+        tmpItRet = model->intersect(shadowRay);
+        if (tmpItRet.isHit) {
+            return Color::black();
+        }
+    }
+
     float NdotL = Vector3::dot(negateLightDirection, itRet.normal);
     float NdotH = Vector3::dot((negateLightDirection - ray.direction).normalize(), itRet.normal);
     float diffuseIntensity = this->diffuse * (NdotL > 0 ? NdotL : 0);
@@ -89,11 +101,21 @@ PointLight &PointLight::operator=(const PointLight &pLight) {
     return *this;
 }
 
-Color PointLight::sample(const Ray &ray, const IntersectResult &itRet) {
+Color PointLight::sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) {
     Vector3 delta = this->position - itRet.position;
     float r = delta.length();
     float attenuation = 1 / (r * r) * this->far;
     Vector3 lightDirection = delta.normalize();
+
+    // 处理阴影
+    Ray shadowRay = Ray(itRet.position, lightDirection);
+    IntersectResult tmpItRet;
+    for (auto &model : models) {
+        tmpItRet = model->intersect(shadowRay);
+        if (tmpItRet.isHit && tmpItRet.distance < r) {
+            return Color::black();
+        }
+    }
 
     float NdotL = Vector3::dot(lightDirection, itRet.normal);
     float NdotH = Vector3::dot((lightDirection - ray.direction).normalize(), itRet.normal);
@@ -115,7 +137,7 @@ AmbientLight::AmbientLight(float ambientIntensity) {
     this->ambientIntensity = ambientIntensity;
 }
 
-Color AmbientLight::sample(const Ray &ray, const IntersectResult &itRet) {
+Color AmbientLight::sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) {
     return Color::white() * this->ambientIntensity;
 }
 

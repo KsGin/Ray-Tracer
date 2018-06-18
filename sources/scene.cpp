@@ -80,7 +80,7 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     Color lightColor = Color::black();
 
     for (auto &light : this->lights) {
-        lightColor = (lightColor + light->sample(ray, itRet)).modulate();
+        lightColor = (lightColor + light->sample(ray, itRet, this->models)).modulate();
     }
 
     thisColor = thisColor * lightColor;

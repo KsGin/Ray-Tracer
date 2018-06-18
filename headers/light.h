@@ -7,6 +7,7 @@
 #ifndef RAY_TRACER_LIGHT_H
 #define RAY_TRACER_LIGHT_H
 
+#include <vector>
 #include "../include/math/vector.hpp"
 #include "color.h"
 #include "ray.h"
@@ -48,7 +49,7 @@ public:
     /*
      * 采样方法
      */
-    virtual Color sample(const Ray &ray, const IntersectResult &itRet) = 0;
+    virtual Color sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) = 0;
 };
 
 /*
@@ -89,7 +90,7 @@ public:
     /*
      * 颜色取样
      */
-    Color sample(const Ray &ray, const IntersectResult &itRet);
+    Color sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models);
 };
 
 /*
@@ -127,7 +128,7 @@ public:
     /*
      * 颜色取样
      */
-    Color sample(const Ray &ray, const IntersectResult &itRet);
+    Color sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models);
 };
 
 /*
@@ -168,7 +169,7 @@ public:
     /*
      * 颜色取样
      */
-    Color sample(const Ray &ray, const IntersectResult &itRet);
+    Color sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models);
 };
 
 #endif //RAY_TRACER_LIGHT_H
