@@ -74,23 +74,40 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     if (itRet.geometry == NOGEO) return Color::black();
 
+    // 获得折射度和反射度
     float reflectiveness = models[cut]->getReflectiveness();
-    Color thisColor = models[cut]->getColor(itRet) * (1 - reflectiveness);
+    float refractiveness = models[cut]->getRefractiveness();
 
+    // 最终颜色
+    Color finalColor = Color::black();
+
+    // 计算光照颜色
     Color lightColor = Color::black();
-
     for (auto &light : this->lights) {
-        lightColor = (lightColor + light->sample(ray, itRet, this->models)).modulate();
+        lightColor = lightColor + light->sample(ray, itRet, this->models);
     }
 
-    thisColor = thisColor * lightColor;
+    // 取得材质颜色
+    Color materialColor = models[cut]->getColor(itRet);
 
+    // 计算折射颜色
+    Color refractionColor = Color::black();
+    // +++++++++++++ ready to do something ++++++++++++++++++++++++
+
+    // 递归追踪计算反射颜色
+    Color reflectionColor = Color::black();
     if (maxReflect > 0 && reflectiveness > 0) {
         Ray reflectRay = Ray(itRet.position,
                              ray.direction - itRet.normal * (Vector3::dot(ray.direction, itRet.normal)) * 2);
-        thisColor = thisColor + rayTrace(reflectRay, maxReflect - 1) * reflectiveness;
+        reflectionColor = reflectionColor + rayTrace(reflectRay, maxReflect - 1);
     }
 
-    return thisColor;
+    // 混合
+    finalColor = finalColor +
+                 ((materialColor * Device::clamp(1 - reflectiveness - refractiveness) +
+                   reflectionColor * Device::clamp(reflectiveness) +
+                   refractionColor * Device::clamp(reflectiveness)) * lightColor);
+
+    return finalColor;
 }
 

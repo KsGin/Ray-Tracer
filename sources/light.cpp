@@ -50,8 +50,7 @@ DirectionLight &DirectionLight::operator=(const DirectionLight &dLight) {
     return *this;
 }
 
-Color
-DirectionLight::sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) {
+Color DirectionLight::sample(const Ray &ray, const IntersectResult &itRet, const std::vector<Model *> models) {
     Vector3 negateLightDirection = Vector3(this->direction).negate();
 
     // 处理阴影

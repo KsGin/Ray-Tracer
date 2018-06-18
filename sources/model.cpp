@@ -16,17 +16,20 @@ Plane::~Plane() {
 
 }
 
-Plane::Plane(const Math::Vector3 &normal, const float &distance, const float &reflectiveness, const Color &color) {
+Plane::Plane(const Math::Vector3 &normal, const float &distance, const float &reflectiveness,
+             const float &refractiveness, const Color &color) {
     this->normal = normal;
     this->distance = distance;
     this->color = color;
     this->reflectiveness = reflectiveness;
+    this->refractiveness = refractiveness;
 }
 
 Plane::Plane(const Plane &plane) {
     this->normal = plane.normal;
     this->distance = plane.distance;
     this->reflectiveness = plane.reflectiveness;
+    this->refractiveness = plane.refractiveness;
     this->color - plane.color;
 }
 
@@ -34,6 +37,7 @@ Plane &Plane::operator=(const Plane &plane) {
     this->normal = plane.normal;
     this->distance = plane.distance;
     this->reflectiveness = plane.reflectiveness;
+    this->refractiveness = plane.refractiveness;
     this->color - plane.color;
     return *this;
 }
@@ -58,13 +62,26 @@ float Plane::getReflectiveness() {
 
 Color Plane::getColor(const IntersectResult &itRet) {
     float u = 0, v = 0;
-    if (itRet.normal._x != 0) {u = itRet.position._y ; v = itRet.position._z;}
-    if (itRet.normal._y != 0) {u = itRet.position._x ; v = itRet.position._z;}
-    if (itRet.normal._z != 0) {u = itRet.position._x ; v = itRet.position._y;}
+    if (itRet.normal._x != 0) {
+        u = itRet.position._y;
+        v = itRet.position._z;
+    }
+    if (itRet.normal._y != 0) {
+        u = itRet.position._x;
+        v = itRet.position._z;
+    }
+    if (itRet.normal._z != 0) {
+        u = itRet.position._x;
+        v = itRet.position._y;
+    }
     return abs(static_cast<int>(
                floor(u * 0.5) +
                floor(v * 0.5)) % 2) < 1 ?
            Color::white() : Color::black();
+}
+
+float Plane::getRefractiveness() {
+    return this->refractiveness;
 }
 
 
@@ -72,10 +89,12 @@ Sphere::Sphere() {
     this->radius = 0;
 }
 
-Sphere::Sphere(const Math::Vector3 &center, const float &radius, const float &reflectiveness, const Color &color) {
+Sphere::Sphere(const Math::Vector3 &center, const float &radius, const float &reflectiveness,
+               const float &refractiveness, const Color &color) {
     this->center = center;
     this->radius = radius;
     this->reflectiveness = reflectiveness;
+    this->refractiveness = refractiveness;
     this->color = color;
 }
 
@@ -83,6 +102,7 @@ Sphere::Sphere(const Sphere &s) {
     this->center = s.center;
     this->radius = s.radius;
     this->reflectiveness = s.reflectiveness;
+    this->refractiveness = s.refractiveness;
     this->color = s.color;
 }
 
@@ -90,6 +110,7 @@ Sphere &Sphere::operator=(const Sphere &s) {
     this->center = s.center;
     this->radius = s.radius;
     this->reflectiveness = s.reflectiveness;
+    this->refractiveness = s.refractiveness;
     this->color = s.color;
     return *this;
 }
@@ -122,6 +143,10 @@ float Sphere::getReflectiveness() {
 
 Color Sphere::getColor(const IntersectResult &itRet) {
     return this->color;
+}
+
+float Sphere::getRefractiveness() {
+    return this->refractiveness;
 }
 
 IntersectResult::IntersectResult() {

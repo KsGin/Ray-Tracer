@@ -132,6 +132,11 @@ void Device::handleEvent() {
     }
 }
 
+float Device::clamp(const float &value, const float &maxValue, const float &minValue) {
+    float ret = value > minValue ? value : minValue;
+    return ret < maxValue ? ret : maxValue;
+}
+
 
 
 

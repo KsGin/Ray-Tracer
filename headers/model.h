@@ -85,6 +85,11 @@ public:
     float reflectiveness;
 
     /*
+     * 折射度
+     */
+    float refractiveness;
+
+    /*
      * 颜色
      */
     Color color;
@@ -103,6 +108,11 @@ public:
      * 获得模型反射度
      */
     virtual float getReflectiveness() = 0;
+
+    /*
+     * 获得模型反射度
+     */
+    virtual float getRefractiveness() = 0;
 
     /*
      * 获得交点颜色
@@ -137,7 +147,8 @@ public:
     /*
      * 赋值构造方法
      */
-    Plane(const Math::Vector3 &normal, const float &distance, const float &reflectiveness, const Color &color);
+    Plane(const Math::Vector3 &normal, const float &distance, const float &reflectiveness, const float &refractiveness,
+          const Color &color);
 
     /*
      * 对象拷贝
@@ -158,6 +169,11 @@ public:
      * 获得交点反射度
     */
     float getReflectiveness();
+
+    /*
+     * 获得交点折射度
+    */
+    float getRefractiveness();
 
     /*
      * 获得颜色
@@ -190,7 +206,8 @@ public:
     /*
      * 值赋值构造方法
      */
-    Sphere(const Math::Vector3 &center, const float &radius, const float &reflectiveness, const Color &color);
+    Sphere(const Math::Vector3 &center, const float &radius, const float &reflectiveness, const float &refractiveness,
+           const Color &color);
 
     /*
      * 对象拷贝构造方法
@@ -211,6 +228,11 @@ public:
      * 获得交点反射度
      */
     float getReflectiveness();
+
+    /*
+     * 获得交点折射度
+     */
+    float getRefractiveness();
 
     /*
      * 获得颜色

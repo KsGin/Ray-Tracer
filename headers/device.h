@@ -92,12 +92,12 @@ public:
     /*
      * 修改像素颜色
      */
-    void setPixelColor(const int x , const int y , const Color& color);
+    void setPixelColor(const int x, const int y, const Color &color);
 
     /*
      * 获得像素颜色
      */
-    Color getPixelColor(const int x , const int y);
+    Color getPixelColor(const int x, const int y);
 
     /*
      * 更新像素数据
@@ -107,7 +107,7 @@ public:
     /*
      * 更新窗口标题
      */
-    void updateWindowTitle(const char* title);
+    void updateWindowTitle(const char *title);
 
     /*
      * 获得当前系统时间（毫秒）
@@ -118,6 +118,11 @@ public:
      * 事件处理
      */
     void handleEvent();
+
+    /*
+     * 数值限制
+     */
+    static float clamp(const float &value, const float &maxValue = 1, const float &minValue = 0);
 };
 
 
