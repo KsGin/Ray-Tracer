@@ -13,6 +13,10 @@
 2. 多光源（点光源）反射
 
     ![just reflect2](https://image.ibb.co/mMDgLJ/WX20180615_135744_2x.png)
+    
+3. 多光源（点光源）反射，阴影
+    
+    ![reflect and shadow](https://image.ibb.co/ejuiNy/WX20180618_131716_2x.png)
 
 内容实现：
 
