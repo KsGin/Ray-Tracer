@@ -16,13 +16,15 @@ Plane::~Plane() {
 
 }
 
-Plane::Plane(const Math::Vector3 &normal, const float &distance, const float &reflectiveness,
-             const float &refractiveness, const Color &color) {
+Plane::Plane(const Math::Vector3 &normal, const float &distance,
+             const float &reflectiveness, const float &refractiveness, const float &transparency,
+             const Color &color) {
     this->normal = normal;
     this->distance = distance;
     this->color = color;
     this->reflectiveness = reflectiveness;
     this->refractiveness = refractiveness;
+    this->transparency = transparency;
 }
 
 Plane::Plane(const Plane &plane) {
@@ -30,6 +32,7 @@ Plane::Plane(const Plane &plane) {
     this->distance = plane.distance;
     this->reflectiveness = plane.reflectiveness;
     this->refractiveness = plane.refractiveness;
+    this->transparency = plane.transparency;
     this->color - plane.color;
 }
 
@@ -38,6 +41,7 @@ Plane &Plane::operator=(const Plane &plane) {
     this->distance = plane.distance;
     this->reflectiveness = plane.reflectiveness;
     this->refractiveness = plane.refractiveness;
+    this->transparency = plane.transparency;
     this->color - plane.color;
     return *this;
 }
@@ -84,17 +88,23 @@ float Plane::getRefractiveness() {
     return this->refractiveness;
 }
 
+float Plane::getTransparency() {
+    return this->transparency;
+}
+
 
 Sphere::Sphere() {
     this->radius = 0;
 }
 
-Sphere::Sphere(const Math::Vector3 &center, const float &radius, const float &reflectiveness,
-               const float &refractiveness, const Color &color) {
+Sphere::Sphere(const Math::Vector3 &center, const float &radius,
+               const float &reflectiveness, const float &refractiveness, const float &transparency,
+               const Color &color) {
     this->center = center;
     this->radius = radius;
     this->reflectiveness = reflectiveness;
     this->refractiveness = refractiveness;
+    this->transparency = transparency;
     this->color = color;
 }
 
@@ -111,6 +121,7 @@ Sphere &Sphere::operator=(const Sphere &s) {
     this->radius = s.radius;
     this->reflectiveness = s.reflectiveness;
     this->refractiveness = s.refractiveness;
+    this->transparency = s.transparency;
     this->color = s.color;
     return *this;
 }
@@ -147,6 +158,10 @@ Color Sphere::getColor(const IntersectResult &itRet) {
 
 float Sphere::getRefractiveness() {
     return this->refractiveness;
+}
+
+float Sphere::getTransparency() {
+    return this->transparency;
 }
 
 IntersectResult::IntersectResult() {

@@ -74,9 +74,10 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     if (itRet.geometry == NOGEO) return Color::black();
 
-    // 获得折射度和反射度
+    // 获得折射度和反射度以及透明度
     float reflectiveness = models[cut]->getReflectiveness();
     float refractiveness = models[cut]->getRefractiveness();
+    float transparency = models[cut]->getTransparency();
 
     // 最终颜色
     Color finalColor = Color::black();
@@ -92,7 +93,27 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     // 计算折射颜色
     Color refractionColor = Color::black();
-    // +++++++++++++ ready to do something ++++++++++++++++++++++++
+    if (transparency > 0) {
+        Ray refractRay = Ray(itRet.position + Vector3(refractiveness, 0, 0),
+                             ray.direction);
+        IntersectResult refractItRet, refractTmpItRet;
+        refractItRet.distance = maxReflect == this->maxReflect ? this->camera->far : INT_MAX;
+        int currentModelIdx = cut;
+        idx = 0, cut = idx;
+        for (auto &model : models) {
+            if (idx != currentModelIdx) {
+                refractTmpItRet = model->intersect(refractRay);
+                if (refractTmpItRet.isHit && refractTmpItRet.distance < refractItRet.distance) {
+                    refractItRet = refractTmpItRet;
+                    cut = idx;
+                }
+            }
+            idx++;
+        }
+        if (refractItRet.isHit) {
+            refractionColor = refractionColor + models[cut]->getColor(itRet);
+        }
+    }
 
     // 递归追踪计算反射颜色
     Color reflectionColor = Color::black();
@@ -104,9 +125,9 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
 
     // 混合
     finalColor = finalColor +
-                 ((materialColor * Device::clamp(1 - reflectiveness - refractiveness) +
-                   reflectionColor * Device::clamp(reflectiveness) +
-                   refractionColor * Device::clamp(reflectiveness)) * lightColor);
+                 ((materialColor * Device::clamp(1 - reflectiveness) +
+                   reflectionColor * Device::clamp(reflectiveness)) * (1 - transparency) +
+                  refractionColor * Device::clamp(transparency)) * lightColor;
 
     return finalColor;
 }
