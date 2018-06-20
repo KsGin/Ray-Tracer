@@ -102,9 +102,20 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     // 递归追踪计算折射颜色 problem1
     Color refractionColor = Color::black();
     if (maxReflect > 0 && transparency > 0) {
-        Vector3 refractDirection = (ray.direction + Vector3(0 , refractiveness , 0)).normalize();
+        // 光线从外部击中模型表面点计算第一次折射
+        Vector3 refractDirection = ray.direction + Vector3(reflectiveness , refractiveness , refractiveness);
         Ray refractRay = Ray(itRet.position, refractDirection);
-        refractionColor = rayTrace(refractRay, maxReflect - 1);
+
+        itRet = models[cut]->innerIntersect(refractRay);
+
+        if (itRet.isHit) {
+            // 光线穿过模型内部击中模型另一边表面计算第二次折射
+            refractDirection = refractDirection - Vector3(reflectiveness , refractiveness , refractiveness);
+            refractRay = Ray(itRet.position, refractDirection);
+
+            refractionColor = rayTrace(refractRay, maxReflect - 1);
+        }
+
     }
 
     // 混合

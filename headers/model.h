@@ -110,6 +110,11 @@ public:
     virtual IntersectResult intersect(const Ray &ray) = 0;
 
     /*
+     * 虚函数 内部相交测试
+     */
+    virtual IntersectResult innerIntersect(const Ray &ray) = 0;
+
+    /*
      * 获得模型反射度
      */
     virtual float getReflectiveness() = 0;
@@ -177,6 +182,11 @@ public:
     IntersectResult intersect(const Ray &ray);
 
     /*
+     * 内部相交测试
+     */
+    IntersectResult innerIntersect(const Ray &ray);
+
+    /*
      * 获得交点反射度
     */
     float getReflectiveness();
@@ -240,6 +250,11 @@ public:
      * 相交测试
      */
     IntersectResult intersect(const Ray &ray);
+
+    /*
+     * 内部相交测试
+     */
+    IntersectResult innerIntersect(const Ray &ray);
 
     /*
      * 获得交点反射度

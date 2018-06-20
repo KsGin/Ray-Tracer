@@ -92,6 +92,10 @@ float Plane::getTransparency() {
     return this->transparency;
 }
 
+IntersectResult Plane::innerIntersect(const Ray &ray) {
+    return intersect(ray);
+}
+
 
 Sphere::Sphere() {
     this->radius = 0;
@@ -147,6 +151,23 @@ IntersectResult Sphere::intersect(const Ray &ray) {
 
     return ret;
 }
+
+IntersectResult Sphere::innerIntersect(const Ray &ray) {
+    IntersectResult ret;
+
+    Vector3 v = (ray.origin - this->center) * 2;  // 直径
+    float dotV = Vector3::dot(ray.direction, v);
+
+    if (dotV <= 0) {
+        ret.isHit = true;
+        ret.geometry = SPHERE;
+        ret.distance = -dotV;
+        ret.position = ray.origin + (ray.direction * ret.distance);
+        ret.normal = (ret.position - this->center).normalize();
+    }
+    return ret;
+}
+
 
 float Sphere::getReflectiveness() {
     return this->reflectiveness;
