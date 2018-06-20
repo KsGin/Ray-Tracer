@@ -103,14 +103,14 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     Color refractionColor = Color::black();
     if (maxReflect > 0 && transparency > 0) {
         // 光线从外部击中模型表面点计算第一次折射
-        Vector3 refractDirection = ray.direction + Vector3(reflectiveness , refractiveness , refractiveness);
+        Vector3 refractDirection = ray.direction + Vector3(refractiveness , refractiveness , refractiveness);
         Ray refractRay = Ray(itRet.position, refractDirection);
 
         itRet = models[cut]->innerIntersect(refractRay);
 
         if (itRet.isHit) {
             // 光线穿过模型内部击中模型另一边表面计算第二次折射
-            refractDirection = refractDirection - Vector3(reflectiveness , refractiveness , refractiveness);
+            refractDirection = refractDirection - Vector3(refractiveness , refractiveness , refractiveness);
             refractRay = Ray(itRet.position, refractDirection);
 
             refractionColor = rayTrace(refractRay, maxReflect - 1);
