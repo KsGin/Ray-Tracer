@@ -102,7 +102,7 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     // 递归追踪计算折射颜色 problem1
     Color refractionColor = Color::black();
     if (maxReflect > 0 && transparency > 0) {
-        // 光线从外部击中模型表面点计算第一次折射
+        // 光线从外部击中模型表面点计算第一次折射  （暂时模拟实现）
         Vector3 refractDirection = ray.direction + Vector3(refractiveness , refractiveness , refractiveness);
         Ray refractRay = Ray(itRet.position, refractDirection);
 
