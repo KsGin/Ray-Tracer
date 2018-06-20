@@ -65,7 +65,7 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     int idx = 0, cut = idx;
     for (auto &model : this->models) {
         tmpItRet = model->intersect(ray);
-        if (tmpItRet.isHit && tmpItRet.distance < itRet.distance) {
+        if (tmpItRet.isHit && tmpItRet.distance < itRet.distance && tmpItRet.distance > this->camera->near) {
             itRet = tmpItRet;
             cut = idx;
         }
@@ -102,15 +102,14 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     // 递归追踪计算折射颜色 problem1
     Color refractionColor = Color::black();
     if (maxReflect > 0 && transparency > 0) {
-        Vector3 refractDirection = (ray.direction + Vector3(refractiveness, 0, 0)).normalize();
+        Vector3 refractDirection = (ray.direction + Vector3(0 , refractiveness , 0)).normalize();
         Ray refractRay = Ray(itRet.position, refractDirection);
-        itRet = models[cut]->intersect(refractRay);
         refractionColor = rayTrace(refractRay, maxReflect - 1);
     }
 
     // 混合
-    finalColor = materialColor * lightColor * Device::clamp(1 - reflectiveness) +
-                 reflectionColor * Device::clamp(1 - transparency) +
+    finalColor = materialColor * lightColor * Device::clamp(1 - reflectiveness - transparency) +
+                 reflectionColor * Device::clamp(reflectiveness) +
                  refractionColor * Device::clamp(transparency);
 
     return finalColor;
