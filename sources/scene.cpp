@@ -91,43 +91,27 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
     // 取得材质颜色
     Color materialColor = models[cut]->getColor(itRet);
 
-    // 计算折射颜色
-    Color refractionColor = Color::black();
-    if (transparency > 0) {
-        Ray refractRay = Ray(itRet.position + Vector3(refractiveness, 0, 0),
-                             ray.direction);
-        IntersectResult refractItRet, refractTmpItRet;
-        refractItRet.distance = maxReflect == this->maxReflect ? this->camera->far : INT_MAX;
-        int currentModelIdx = cut;
-        idx = 0, cut = idx;
-        for (auto &model : models) {
-            if (idx != currentModelIdx) {
-                refractTmpItRet = model->intersect(refractRay);
-                if (refractTmpItRet.isHit && refractTmpItRet.distance < refractItRet.distance) {
-                    refractItRet = refractTmpItRet;
-                    cut = idx;
-                }
-            }
-            idx++;
-        }
-        if (refractItRet.isHit) {
-            refractionColor = refractionColor + models[cut]->getColor(itRet);
-        }
-    }
-
     // 递归追踪计算反射颜色
     Color reflectionColor = Color::black();
     if (maxReflect > 0 && reflectiveness > 0) {
-        Ray reflectRay = Ray(itRet.position,
-                             ray.direction - itRet.normal * (Vector3::dot(ray.direction, itRet.normal)) * 2);
+        Vector3 reflectDirection = ray.direction - itRet.normal * (Vector3::dot(ray.direction, itRet.normal)) * 2;
+        Ray reflectRay = Ray(itRet.position, reflectDirection);
         reflectionColor = reflectionColor + rayTrace(reflectRay, maxReflect - 1);
     }
 
+    // 递归追踪计算折射颜色 problem1
+    Color refractionColor = Color::black();
+    if (maxReflect > 0 && transparency > 0) {
+        Vector3 refractDirection = (ray.direction + Vector3(refractiveness, 0, 0)).normalize();
+        Ray refractRay = Ray(itRet.position, refractDirection);
+        itRet = models[cut]->intersect(refractRay);
+        refractionColor = rayTrace(refractRay, maxReflect - 1);
+    }
+
     // 混合
-    finalColor = finalColor +
-                 ((materialColor * Device::clamp(1 - reflectiveness) +
-                   reflectionColor * Device::clamp(reflectiveness)) * (1 - transparency) +
-                  refractionColor * Device::clamp(transparency)) * lightColor;
+    finalColor = materialColor * lightColor * Device::clamp(1 - reflectiveness) +
+                 reflectionColor * Device::clamp(1 - transparency) +
+                 refractionColor * Device::clamp(transparency);
 
     return finalColor;
 }
