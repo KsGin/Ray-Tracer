@@ -12,11 +12,11 @@ using namespace std;
 const int width = 900;
 const int height = 600;
 const bool isScreenFull = false;
-const float sphereRefractiveness = static_cast<const float>(1 / 1.55);
+const float sphereRefractiveness = static_cast<const float>(1 / 1.67);
 const float sphereReflectiveness = 0.2;
-const float sphereTransparency = 0.2;
+const float sphereTransparency = 0;
 const float planeRefractiveness = 0;
-const float planeReflectiveness = 0;
+const float planeReflectiveness = 0.1;
 const float planeTransparency = 0;
 
 int main() {
