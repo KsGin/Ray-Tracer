@@ -25,7 +25,7 @@ int main() {
 
     device->initialize(width, height, isScreenFull);
 
-    Camera *camera = new PerspectiveCamera(90, Vector3(0, 10, -20), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
+    Camera *camera = new PerspectiveCamera(90, Vector3(0, 10, -10), Vector3(0, 0, 0), Vector3(0, 1, 0), 0.01, 50);
 
     vector<Model *> models = vector<Model *>(0);
     models.push_back(new Sphere(Vector3(0, 2, 0), 2, sphereReflectiveness, sphereRefractiveness, sphereTransparency, Color::red()));
@@ -35,7 +35,7 @@ int main() {
     models.push_back(new Plane(Vector3(0, 0, -1), -10, planeReflectiveness, planeRefractiveness, planeTransparency, Color::white()));
     models.push_back(new Plane(Vector3(1, 0, 0), -10, planeReflectiveness, planeRefractiveness, planeTransparency, Color::white()));
     models.push_back(new Plane(Vector3(-1, 0, 0), -10, planeReflectiveness, planeRefractiveness, planeTransparency, Color::white()));
-    models.push_back(new Sphere(Vector3(0, 6, -12), 6, 0 , sphereRefractiveness, 0.7, Color::white()));
+//    models.push_back(new Sphere(Vector3(0, 6, -12), 6, 0 , sphereRefractiveness, 0.7, Color::white()));
     vector<Light *> lights = vector<Light *>(0);
     lights.push_back(new AmbientLight(0.01));
 //    lights.push_back(new DirectionLight(Vector3(5, -5, 0).normalize(), Color(1, 1, 1, 1), 0.9, 1, 64));
@@ -43,7 +43,7 @@ int main() {
     lights.push_back(new PointLight(Vector3(5, 5, -5), Color(0.2, 0.2, 1, 1), 0.3, 1, 128, 50));
     lights.push_back(new PointLight(Vector3(0, 10, -5), Color(0.2, 1, 0.2, 1), 0.3, 1, 128, 50));
 
-    lights.push_back(new DirectionLight(Vector3(0, -1, 1).normalize(), Color(1, 1, 1, 1), 0.2, 1, 128));
+//    lights.push_back(new DirectionLight(Vector3(0, -1, 1).normalize(), Color(1, 1, 1, 1), 0.2, 1, 128));
 
     Scene *scene = new Scene(models, lights, camera, width, height);
 
