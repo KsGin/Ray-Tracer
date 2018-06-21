@@ -17,6 +17,10 @@
 3. 多光源（点光源）反射，阴影
     
     ![reflect and shadow](https://image.ibb.co/ejuiNy/WX20180618_131716_2x.png)
+    
+4. 多光源（点光源）反射，阴影，透过高透明度球体（更好的观察到折射情况）
+
+    ![reflect and shadow and refract](https://image.ibb.co/gViz28/QQ20180621_172307_2x.png)
 
 内容实现：
 
