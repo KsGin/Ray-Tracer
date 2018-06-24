@@ -73,6 +73,7 @@ int main() {
         }
     }
 
+    delete device;
     delete camera;
     delete scene;
 
