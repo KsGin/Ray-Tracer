@@ -46,11 +46,7 @@ namespace Math {
         /**
          * 重载 =
          */
-        Vector2 &operator=(const Vector2 &v2) {
-            _x = v2._x;
-            _y = v2._y;
-            return *this;
-        }
+        Vector2 &operator=(Vector2 const &v2) = default;
 
         /**
          * 重载 +
@@ -151,12 +147,7 @@ namespace Math {
         /**
          * 重载 =
          */
-        Vector3 &operator=(const Vector3 &v3) {
-            _x = v3._x;
-            _y = v3._y;
-            _z = v3._z;
-            return *this;
-        }
+        Vector3 &operator=(Vector3 const &v3) = default;
 
         /**
          * 重载 +

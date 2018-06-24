@@ -81,9 +81,7 @@ namespace Math {
         /*
          * 重载 =
          */
-        Matrix operator=(const Matrix &mat) const {
-            return Matrix(mat);
-        }
+        Matrix& operator=(Matrix const &mat) = default;
 
         /*
          * 重载 ==

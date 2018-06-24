@@ -34,8 +34,8 @@ Scene::~Scene() {
 }
 
 Scene &Scene::operator=(const Scene &scene) {
-    this->camera = std::move(scene.camera);
-    this->models = std::move(scene.models);
+    this->camera = scene.camera;
+    this->models = scene.models;
     this->screenWidth = scene.screenWidth;
     this->screenHeight = scene.screenHeight;
     return *this;
@@ -109,7 +109,7 @@ Color Scene::rayTrace(const Ray &ray, float maxReflect) {
         float cosI = Vector3::dot(inRayDirection, normalDirection);
         float cosT2 = 1 - refractiveness * refractiveness * (1 - cosI * cosI);
         Vector3 refractDirection =
-            inRayDirection * refractiveness - (normalDirection * (sqrt(cosT2) + refractiveness * cosI));
+        inRayDirection * refractiveness - (normalDirection * (sqrt(cosT2) + refractiveness * cosI));
         Ray refractRay = Ray(itRet.position, refractDirection);
 
         itRet = models[cut]->innerIntersect(refractRay);
